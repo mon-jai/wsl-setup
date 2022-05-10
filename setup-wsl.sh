@@ -1,3 +1,7 @@
+sudo ln -s "$(wslpath "$(wslvar USERPROFILE)")" /
+rm -rf root
+mv Max root
+
 # Setup zsh
 apt install -y zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -14,7 +18,3 @@ mkdir -p $NVIM_CONFIG_FOLDER
 (cd $NVIM_CONFIG_FOLDER && curl https://raw.githubusercontent.com/vim/vim/master/runtime/mswin.vim -O)
 (cd $NVIM_CONFIG_FOLDER && curl https://raw.githubusercontent.com/vim/vim/master/runtime/evim.vim -o init.vim)
 echo "inoremap <c-q> <c-o>::confirm quit<cr>" >> $NVIM_CONFIG_FOLDER/init.vim
-
-sudo ln -s "$(wslpath "$(wslvar USERPROFILE)")" /
-rm -rf root
-mv Max root
