@@ -5,6 +5,7 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:
 echo "alias -g ~=\"/mnt/c/Users/Max\"" >> ~/.zshrc
 echo "LISTMAX=-1" >> ~/.zshrc
 echo "if [[ $\(pwd\) == \"/root\"  ]]; then; cd ~; fi" >> ~/.zshrc
+sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' ~/.zshrc
 
 # Setup neovim
 NVIM_CONFIG_FOLDER=~/.config/nvim/
