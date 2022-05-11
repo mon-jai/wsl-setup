@@ -1,4 +1,4 @@
-sudo ln -s "$(wslpath "$(wslvar USERPROFILE)")" /
+ln -s "$(wslpath "$(wslvar USERPROFILE)")" /
 rm -rf /root
 mv /"$(wslvar USERNAME)" /root
 
