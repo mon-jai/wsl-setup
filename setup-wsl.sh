@@ -1,6 +1,6 @@
 sudo ln -s "$(wslpath "$(wslvar USERPROFILE)")" /
-rm -rf root
-mv "$(wslvar USERNAME)" root
+rm -rf /root
+mv /"$(wslvar USERNAME)" /root
 
 # Setup zsh
 apt install -y zsh
