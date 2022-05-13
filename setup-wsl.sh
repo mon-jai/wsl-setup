@@ -1,8 +1,7 @@
 # https://askubuntu.com/a/86891
 cp -vra ~/. "$(wslpath "$(wslvar USERPROFILE)")"
-ln -s "$(wslpath "$(wslvar USERPROFILE)")" /
-rm -rf /root
-mv /"$(wslvar USERNAME)" /root
+sudo rm -rf ~
+ln -s "$(wslpath "$(wslvar USERPROFILE)")" ~
 
 # Setup zsh
 ZSHRC=~/.zshrc
