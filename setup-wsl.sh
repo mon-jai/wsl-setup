@@ -9,6 +9,10 @@ sudo apt install -y zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+# https://www.reddit.com/r/zsh/comments/p57adk/how_to_autoexpand_tab_completion/h9gj9sn/?utm_source=reddit&utm_medium=web2x&context=3
+echo "LISTMAX=-1" >> $ZSHRC
+echo "zstyle ':completion:*:default' list-prompt   '%S%m%s'" >> $ZSHRC
+echo "zstyle ':completion:*:default' select-prompt '%S%m%s'" >> $ZSHRC
 echo "LISTMAX=-1" >> $ZSHRC
 sed -i '1s;^;ZSH_DISABLE_COMPFIX=true\n;' $ZSHRC
 sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' $ZSHRC
