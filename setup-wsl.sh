@@ -1,7 +1,8 @@
 # https://askubuntu.com/a/86891
-cp -vra ~/. "$(wslpath "$(wslvar USERPROFILE)")"
-sudo rm -rf ~
-ln -s "$(wslpath "$(wslvar USERPROFILE)")" ~
+WINDOWS_USER_PROFILE="$(wslpath "$(wslvar USERPROFILE)")"
+cp -vra ~/. $WINDOWS_USER_PROFILE
+rm -rf ~
+ln -s WINDOWS_USER_PROFILE ~
 
 echo "$(whoami) ALL=(ALL) NOPASSWD:ALL" | sudo dd of="/etc/sudoers.d/$(whoami)"
 
