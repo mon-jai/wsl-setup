@@ -3,6 +3,8 @@ cp -vra ~/. "$(wslpath "$(wslvar USERPROFILE)")"
 sudo rm -rf ~
 ln -s "$(wslpath "$(wslvar USERPROFILE)")" ~
 
+echo "$(whoami) ALL=(ALL) NOPASSWD:ALL" | sudo dd of="/etc/sudoers.d/$(whoami)"
+
 # Setup zsh
 ZSHRC=~/.zshrc
 sudo apt install -y zsh
