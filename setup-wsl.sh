@@ -7,6 +7,6 @@ HOME_DICECTORY="/home/$(whoami)"
 
 # https://askubuntu.com/a/86891
 cp -vra ~/. $WINDOWS_USER_PROFILE
-sudo rm -r "/home/$(whoami)"
+sudo rm -r $HOME_DICECTORY
 sudo ln -s $WINDOWS_USER_PROFILE $HOME_DICECTORY
 sudo chown $(whoami):$(whoami) -R $HOME_DICECTORY
