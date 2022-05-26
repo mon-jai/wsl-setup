@@ -10,3 +10,9 @@ cp -vra ~/. $WINDOWS_USER_PROFILE
 sudo rm -r $HOME_DICECTORY
 sudo ln -s $WINDOWS_USER_PROFILE $HOME_DICECTORY
 sudo chown $(whoami):$(whoami) -R $HOME_DICECTORY
+
+sudo apt install -y clang
+sudo apt install -y pkg-config libssl-dev libxcb-composite0-dev libx11-dev
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source $HOME/.cargo/env
+cargo install nu --features=extra
