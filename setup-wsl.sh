@@ -17,6 +17,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 source $HOME/.cargo/env
 cargo install nu --features=extra
 
-
-`chsh -s` doesn't work on Ubuntu https://unix.stackexchange.com/a/683525
+# https://www.nushell.sh/book/installation.html#setting-the-login-shell-nix
+echo $(which nu) | sudo tee -a /etc/shells > '/dev/null'
+# `chsh -s` doesn't work on Ubuntu https://unix.stackexchange.com/a/683525
 chsh
