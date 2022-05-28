@@ -22,4 +22,4 @@ echo $(which nu) | sudo tee -a /etc/shells > '/dev/null'
 # `chsh -s` doesn't work on Ubuntu https://unix.stackexchange.com/a/683525
 chsh
 # https://github.com/nushell/nushell/issues/4771#issuecomment-1061143403
-echo 'cd (if ((pwd | str trim) == "/mnt/c/Windows/system32") { "~" } else { $nu.cwd })' >> ~/.config/nushell/config.nu
+echo 'cd (if ((pwd | str trim) == "/mnt/c/Windows/system32") { "~" } else { $env.PWD })' >> ~/.config/nushell/config.nu
