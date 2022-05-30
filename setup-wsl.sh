@@ -22,4 +22,5 @@ echo $(which nu) | sudo tee -a /etc/shells > '/dev/null'
 # `chsh -s` doesn't work on Ubuntu https://unix.stackexchange.com/a/683525
 chsh
 echo 'alias npm = npm.exe' >> ~/.config/nushell/config.nu
+echo 'alias npx = npx.exe' >> ~/.config/nushell/config.nu
 echo 'alias node = node.exe' >> ~/.config/nushell/config.nu
