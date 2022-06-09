@@ -19,8 +19,7 @@ cargo install nu --features=extra
 
 # https://www.nushell.sh/book/installation.html#setting-the-login-shell-nix
 echo $(which nu) | sudo tee -a /etc/shells > '/dev/null'
-# `chsh -s` doesn't work on Ubuntu https://unix.stackexchange.com/a/683525
-chsh
-echo 'alias npm = npm.exe' >> ~/.config/nushell/config.nu
-echo 'alias npx = npx.exe' >> ~/.config/nushell/config.nu
-echo 'alias node = node.exe' >> ~/.config/nushell/config.nu
+# https://unix.stackexchange.com/a/111367
+sudo chsh -s "$(command -v nu)" "${USER}"
+
+echo 'alias npm = npm.exe\nalias npx = npx.exe\nalias node = node.exe' >> ~/.config/nushell/config.nu
