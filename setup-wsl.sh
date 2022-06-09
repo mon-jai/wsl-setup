@@ -22,4 +22,4 @@ echo $(which nu) | sudo tee -a /etc/shells > '/dev/null'
 # https://unix.stackexchange.com/a/111367
 sudo chsh -s "$(command -v nu)" "${USER}"
 
-echo 'alias npm = npm.exe\nalias npx = npx.exe\nalias node = node.exe' >> ~/.config/nushell/config.nu
+printf "alias npm = npm.exe\nalias npx = npx.exe\nalias node = node.exe\n" >> ~/.config/nushell/config.nu
