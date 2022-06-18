@@ -23,3 +23,4 @@ echo $(which nu) | sudo tee -a /etc/shells > '/dev/null'
 sudo chsh -s "$(command -v nu)" "${USER}"
 
 printf "alias npm = npm.exe\nalias npx = npx.exe\nalias node = node.exe\n" >> ~/.config/nushell/config.nu
+sed -i 's/$path_segment/$path_segment | str replace (wslpath (wslvar USERPROFILE) | str trim) "~"/' ~/.config/nushell/env.nu
