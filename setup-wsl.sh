@@ -1,3 +1,4 @@
+# https://superuser.com/a/1492456
 echo "$(whoami) ALL=(ALL) NOPASSWD:ALL" | sudo dd of="/etc/sudoers.d/$(whoami)"
 
 sudo apt install wslu -y
