@@ -1,7 +1,7 @@
 # https://superuser.com/a/1492456
 echo "$(whoami) ALL=(ALL) NOPASSWD:ALL" | sudo dd of="/etc/sudoers.d/$(whoami)"
 
-sudo apt install wslu -y
+sudo apt install -y wslu
 # https://superuser.com/a/1568668/1172895
 WINDOWS_USER_PROFILE="$(wslpath "$(wslvar USERPROFILE)")"
 HOME_DICECTORY="/home/$(whoami)"
