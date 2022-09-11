@@ -27,5 +27,8 @@ printf "alias git = git.exe\n"                                                >>
 printf "alias code = code-insiders\n"                                         >> ~/.config/nushell/config.nu
 printf "alias npm = npm.exe\nalias npx = npx.exe\nalias node = node.exe\n"    >> ~/.config/nushell/config.nu
 printf "alias docker = docker.exe\nalias docker-compose = docker-compose.exe" >> ~/.config/nushell/config.nu
+sed -i 's/show_banner: true/show_banner: false/' ~/.config/nushell/config.nu
+
 sed -i 's/def create_left_prompt/let home_directory_symlink_target = (wslpath (wslvar USERPROFILE) | str trim)\n\ndef create_left_prompt/' ~/.config/nushell/env.nu
 sed -i 's/$path_segment/$path_segment | str replace --string $home_directory_symlink_target "~"/' ~/.config/nushell/env.nu
+
