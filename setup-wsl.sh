@@ -31,4 +31,3 @@ sed -i 's/show_banner: true/show_banner: false/' ~/.config/nushell/config.nu
 
 sed -i 's/def create_left_prompt/let home_directory_symlink_target = (wslpath (wslvar USERPROFILE) | str trim)\n\ndef create_left_prompt/' ~/.config/nushell/env.nu
 sed -i 's/$path_segment/$path_segment | str replace --string $home_directory_symlink_target "~"/' ~/.config/nushell/env.nu
-
