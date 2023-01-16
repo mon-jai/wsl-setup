@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# https://gist.github.com/robin-a-meade/58d60124b88b60816e8349d1e3938615
+set -euo pipefail
+
 sudo apt update
 
 # https://superuser.com/a/1492456
