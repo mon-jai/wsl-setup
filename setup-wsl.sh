@@ -17,6 +17,8 @@ cp -vra ~/. "$WINDOWS_USER_PROFILE"
 sudo rm -r "$HOME_DICECTORY"
 sudo ln -s "$WINDOWS_USER_PROFILE" "$HOME_DICECTORY"
 sudo chown "$(whoami):$(whoami)" -R "$HOME_DICECTORY"
+# This message is shown once a day. To disable it please create the /home/max/.hushlogin file.
+touch "${HOME}/.hushlogin"
 
 NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
