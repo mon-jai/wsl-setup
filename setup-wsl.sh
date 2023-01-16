@@ -19,11 +19,11 @@ sudo ln -s "$WINDOWS_USER_PROFILE" "$HOME_DICECTORY"
 sudo chown "$(whoami):$(whoami)" -R "$HOME_DICECTORY"
 cd ~
 
-sudo apt install -y clang
-sudo apt install -y pkg-config libssl-dev libxcb-composite0-dev libx11-dev
-curl --proto https --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-source "$HOME/.cargo/env"
-cargo install nu --features=extra
+NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+echo '# Set PATH, MANPATH, etc., for Homebrew.' >> /home/max/.profile
+echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/max/.profile
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+brew install nushell
 
 # https://www.nushell.sh/book/installation.html#setting-the-login-shell-nix
 which nu | sudo tee -a /etc/shells > '/dev/null'
@@ -49,4 +49,3 @@ sed -i 's/show_banner: true/show_banner: false/' $NU_CONFIG_FILE
 
 sed -i 's/def create_left_prompt/let home_directory_symlink_target = (wslpath (wslvar USERPROFILE) | str trim)\n\ndef create_left_prompt/' $NU_ENV_FILE
 sed -i 's/$path_segment/$path_segment | str replace --string $home_directory_symlink_target "~"/' $NU_ENV_FILE
-
