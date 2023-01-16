@@ -17,7 +17,6 @@ cp -vra ~/. "$WINDOWS_USER_PROFILE"
 sudo rm -r "$HOME_DICECTORY"
 sudo ln -s "$WINDOWS_USER_PROFILE" "$HOME_DICECTORY"
 sudo chown "$(whoami):$(whoami)" -R "$HOME_DICECTORY"
-cd ~
 
 NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 echo '# Set PATH, MANPATH, etc., for Homebrew.' >> /home/max/.profile
