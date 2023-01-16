@@ -10,16 +10,18 @@ sudo apt install -y wslu
 WINDOWS_USER_PROFILE="$(wslpath "$(wslvar USERPROFILE)")"
 HOME_DICECTORY="/home/$(whoami)"
 
+# https://stackoverflow.com/a/21593371/11077662
+cd /
 # https://askubuntu.com/a/86891
 cp -vra ~/. "$WINDOWS_USER_PROFILE"
 sudo rm -r "$HOME_DICECTORY"
 sudo ln -s "$WINDOWS_USER_PROFILE" "$HOME_DICECTORY"
 sudo chown "$(whoami):$(whoami)" -R "$HOME_DICECTORY"
-cd "/home/$(whoami)"
+cd ~
 
 sudo apt install -y clang
 sudo apt install -y pkg-config libssl-dev libxcb-composite0-dev libx11-dev
-curl --proto https --tlsv1.2 -sSf https://sh.rustup.rs | sh -y
+curl --proto https --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 source "$HOME/.cargo/env"
 cargo install nu --features=extra
 
