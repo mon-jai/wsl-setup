@@ -19,8 +19,6 @@ sudo ln -s "$WINDOWS_USER_PROFILE" "$HOME_DICECTORY"
 sudo chown "$(whoami):$(whoami)" -R "$HOME_DICECTORY"
 
 NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-echo '# Set PATH, MANPATH, etc., for Homebrew.' >> /home/max/.profile
-echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/max/.profile
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 brew install nushell
 
