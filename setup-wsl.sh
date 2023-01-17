@@ -43,7 +43,8 @@ NU_ENV_FILE="${NU_CONFIG_DIRECTORY}/env.nu"
 mkdir -p "$NU_CONFIG_DIRECTORY"
 # https://unix.stackexchange.com/a/727932/407790
 curl -fsSL "https://github.com/nushell/nushell/archive/refs/tags/${NU_VERSION}.tar.gz" |\
-  tar -xz --strip-components 5 --transform "s/default_//" -C "$NU_CONFIG_DIRECTORY" "nushell-${NU_VERSION}/crates/nu-utils/src/sample_config/"
+# https://askubuntu.com/a/1366385/1056703
+  tar -xz --touch --strip-components 5 --transform "s/default_//" -C "$NU_CONFIG_DIRECTORY" "nushell-${NU_VERSION}/crates/nu-utils/src/sample_config/"
 rm --force "${NU_CONFIG_DIRECTORY}/sample_login.nu"
 
 printf "alias git = git.exe\n"                                                >> "$NU_CONFIG_FILE"
