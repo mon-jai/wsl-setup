@@ -27,7 +27,6 @@ ls /mnt | grep -E "^[a-z]$" | xargs -d "\n" -I {} sudo ln -s /mnt/{} /{}
 NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 brew install nushell
-echo "Last exit code: $?"
 
 # https://www.nushell.sh/book/installation.html#setting-the-login-shell-nix
 which nu | sudo tee -a /etc/shells > '/dev/null'
