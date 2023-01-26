@@ -10,7 +10,7 @@ sudo apt install -y wslu
 WINDOWS_USER_PROFILE="$(wslpath "$(wslvar USERPROFILE)")"
 HOME_DICECTORY="/home/$(whoami)"
 
-# https://stackoverflow.com/a/21593371/11077662
+# https://stackoverflow.com/a/21593371
 cd /
 # https://askubuntu.com/a/86891
 cp -vra ~/. "$WINDOWS_USER_PROFILE"
@@ -21,7 +21,7 @@ sudo chown "$(whoami):$(whoami)" -R "$HOME_DICECTORY"
 touch "${HOME}/.hushlogin"
 
 # https://superuser.com/a/392878/1172895
-# https://stackoverflow.com/a/21928782/11077662
+# https://stackoverflow.com/a/21928782
 ls /mnt | grep -E "^[a-z]$" | xargs -d "\n" -I {} sudo ln -s /mnt/{} /{}
 
 HOMEBREW_INSTALL_FROM_API=1 NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -38,7 +38,7 @@ NU_CONFIG_DIRECTORY="$HOME/.config/nushell"
 NU_CONFIG_FILE="${NU_CONFIG_DIRECTORY}/config.nu"
 NU_ENV_FILE="${NU_CONFIG_DIRECTORY}/env.nu"
 
-# mkdir if not exists, https://stackoverflow.com/a/793867/11077662
+# mkdir if not exists, https://stackoverflow.com/a/793867
 mkdir -p "$NU_CONFIG_DIRECTORY"
 # https://unix.stackexchange.com/a/727932/407790
 curl -fsSL "https://github.com/nushell/nushell/archive/refs/tags/${NU_VERSION}.tar.gz" |\
@@ -52,6 +52,13 @@ printf "alias node = node.exe\n"                                                
 printf "alias npm = powershell.exe npm.ps1\nalias npx = powershell.exe npx.ps1\n" >> "$NU_CONFIG_FILE"
 printf "alias docker = docker.exe\nalias docker-compose = docker-compose.exe\n"   >> "$NU_CONFIG_FILE"
 sed -i 's/show_banner: true/show_banner: false/'                                     "$NU_CONFIG_FILE"
+
+# https://stackoverflow.com/a/6121114
+# https://stackoverflow.com/a/656744
+# https://stackoverflow.com/a/73479840
+# https://unix.stackexchange.com/a/298593
+# (not used): https://stackoverflow.com/a/19384307, https://stackoverflow.com/a/70709059
+find "$(dirname "$(which npm.ps1)")/" -maxdepth 1 -name "*.ps1" | sed -r "s/^.*\/([^\/]+)\.ps1/alias \1 = powershell.exe \1.ps1/g" >> "$NU_CONFIG_FILE"
 
 sed -i 's/def create_left_prompt/let home_directory_symlink_target = (wslpath (wslvar USERPROFILE) | str trim)\n\ndef create_left_prompt/' "$NU_ENV_FILE"
 sed -i 's/$path_segment/$path_segment | str replace --string $home_directory_symlink_target "~"/'                                          "$NU_ENV_FILE"
