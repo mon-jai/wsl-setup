@@ -43,14 +43,15 @@ mkdir -p "$NU_CONFIG_DIRECTORY"
 # https://unix.stackexchange.com/a/727932/407790
 curl -fsSL "https://github.com/nushell/nushell/archive/refs/tags/${NU_VERSION}.tar.gz" |\
 # https://askubuntu.com/a/1366385/1056703
-  tar -xz --touch --strip-components 5 --transform "s/default_//" -C "$NU_CONFIG_DIRECTORY" "nushell-${NU_VERSION}/crates/nu-utils/src/sample_config/"
+tar -xz --touch --strip-components 5 --transform "s/default_//" -C "$NU_CONFIG_DIRECTORY" "nushell-${NU_VERSION}/crates/nu-utils/src/sample_config/"
 rm --force "${NU_CONFIG_DIRECTORY}/sample_login.nu"
 
-printf "alias git = git.exe\n"                                                >> "$NU_CONFIG_FILE"
-printf "alias code = code-insiders\n"                                         >> "$NU_CONFIG_FILE"
-printf "alias node = node.exe\n"                                              >> "$NU_CONFIG_FILE"
-printf "alias docker = docker.exe\nalias docker-compose = docker-compose.exe" >> "$NU_CONFIG_FILE"
-sed -i 's/show_banner: true/show_banner: false/'                                 "$NU_CONFIG_FILE"
+printf "alias git = git.exe\n"                                                    >> "$NU_CONFIG_FILE"
+printf "alias code = code-insiders\n"                                             >> "$NU_CONFIG_FILE"
+printf "alias node = node.exe\n"                                                  >> "$NU_CONFIG_FILE"
+printf "alias npm = powershell.exe npm.ps1\nalias npx = powershell.exe npx.ps1\n" >> "$NU_CONFIG_FILE"
+printf "alias docker = docker.exe\nalias docker-compose = docker-compose.exe"     >> "$NU_CONFIG_FILE"
+sed -i 's/show_banner: true/show_banner: false/'                                     "$NU_CONFIG_FILE"
 
 sed -i 's/def create_left_prompt/let home_directory_symlink_target = (wslpath (wslvar USERPROFILE) | str trim)\n\ndef create_left_prompt/' "$NU_ENV_FILE"
 sed -i 's/$path_segment/$path_segment | str replace --string $home_directory_symlink_target "~"/'                                          "$NU_ENV_FILE"
