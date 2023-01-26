@@ -50,7 +50,7 @@ printf "alias git = git.exe\n"                                                  
 printf "alias code = code-insiders\n"                                             >> "$NU_CONFIG_FILE"
 printf "alias node = node.exe\n"                                                  >> "$NU_CONFIG_FILE"
 printf "alias npm = powershell.exe npm.ps1\nalias npx = powershell.exe npx.ps1\n" >> "$NU_CONFIG_FILE"
-printf "alias docker = docker.exe\nalias docker-compose = docker-compose.exe"     >> "$NU_CONFIG_FILE"
+printf "alias docker = docker.exe\nalias docker-compose = docker-compose.exe\n"   >> "$NU_CONFIG_FILE"
 sed -i 's/show_banner: true/show_banner: false/'                                     "$NU_CONFIG_FILE"
 
 sed -i 's/def create_left_prompt/let home_directory_symlink_target = (wslpath (wslvar USERPROFILE) | str trim)\n\ndef create_left_prompt/' "$NU_ENV_FILE"
