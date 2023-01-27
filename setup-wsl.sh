@@ -49,19 +49,16 @@ rm --force "${NU_CONFIG_DIRECTORY}/sample_login.nu"
 printf "alias git = git.exe\n"                                                    >> "$NU_CONFIG_FILE"
 printf "alias code = code-insiders\n"                                             >> "$NU_CONFIG_FILE"
 printf "alias node = node.exe\n"                                                  >> "$NU_CONFIG_FILE"
-printf "alias npm = powershell.exe npm.ps1\nalias npx = powershell.exe npx.ps1\n" >> "$NU_CONFIG_FILE"
 printf "alias docker = docker.exe\nalias docker-compose = docker-compose.exe\n"   >> "$NU_CONFIG_FILE"
+printf "source ~/.config/nushell/env-generated.nu\n"                              >> "$NU_CONFIG_FILE"
 sed -i 's/show_banner: true/show_banner: false/'                                     "$NU_CONFIG_FILE"
-
-# https://stackoverflow.com/a/6121114
-# https://stackoverflow.com/a/656744
-# https://stackoverflow.com/a/73479840
-# https://unix.stackexchange.com/a/298593
-# (not used): https://stackoverflow.com/a/19384307, https://stackoverflow.com/a/70709059
-find "$(dirname "$(which npm.ps1)")/" -maxdepth 1 -name "*.ps1" | sed -r "s/^.*\/([^\/]+)\.ps1/alias \1 = powershell.exe \1.ps1/g" >> "$NU_CONFIG_FILE"
 
 sed -i 's/def create_left_prompt/let home_directory_symlink_target = (wslpath (wslvar USERPROFILE) | str trim)\n\ndef create_left_prompt/' "$NU_ENV_FILE"
 sed -i 's/$path_segment/$path_segment | str replace --string $home_directory_symlink_target "~"/'                                          "$NU_ENV_FILE"
-echo "let-env PATH = (bash -c \$\"(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\\necho \$PATH;\")"                                     >> "$NU_ENV_FILE"
+printf "let-env PATH = (bash -c \$\"(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\\necho \$PATH;\")\n"                                 >> "$NU_ENV_FILE"
+
+printf "ls \$\"(which npm.ps1 | get 0.path | path dirname)/*.ps1\" | each {|it| get name | parse -r \"^.*\\/([^\\/]+).ps1\" | get 0.Capture1 }\
+| each {|command_name| \$\"alias (\$command_name) = powershell.exe (\$command_name).ps1\" } | str join \"\\n\"\
+| save --force ~/.config/nushell/env-generated.nu"                                                                                      >> "$NU_ENV_FILE"
 
 history -c
