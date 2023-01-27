@@ -60,6 +60,6 @@ printf "let-env PATH = (bash -c \$\"(/home/linuxbrew/.linuxbrew/bin/brew shellen
 printf "ls \$\"(which npm.ps1 | get 0.path | path dirname)/*.ps1\"
 | each {|it| get name | parse -r \"^.*\\/([^\\/]+).ps1\" | get 0.Capture1 }
 | each {|command_name| \$\"alias (\$command_name) = powershell.exe (\$command_name).ps1\" } | str join \"\\\\n\"
-| save --force ~/.config/nushell/env-generated.nu\n"                                                                                      >> "$NU_ENV_FILE"
+| save --force ~/.config/nushell/env-generated.nu\n"                                                                                    >> "$NU_ENV_FILE"
 
 history -c
