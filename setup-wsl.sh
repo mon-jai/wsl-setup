@@ -60,7 +60,6 @@ sed -i 's/show_banner: true/show_banner: false/'                                
 # (not used): https://stackoverflow.com/a/19384307, https://stackoverflow.com/a/70709059
 find "$(dirname "$(which npm.ps1)")/" -maxdepth 1 -name "*.ps1" | sed -r "s/^.*\/([^\/]+)\.ps1/alias \1 = powershell.exe \1.ps1/g" >> "$NU_CONFIG_FILE"
 
-
 sed -i 's/def create_left_prompt/let home_directory_symlink_target = (wslpath (wslvar USERPROFILE) | str trim)\n\ndef create_left_prompt/' "$NU_ENV_FILE"
 sed -i 's/$path_segment/$path_segment | str replace --string $home_directory_symlink_target "~"/'                                          "$NU_ENV_FILE"
 echo "let-env PATH = (bash -c \$\"(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\\necho \$PATH;\")"                                     >> "$NU_ENV_FILE"
