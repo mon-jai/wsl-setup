@@ -58,7 +58,7 @@ sed -i 's/$path_segment/$path_segment | str replace --string $home_directory_sym
 printf "let-env PATH = (bash -c \$\"(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\\necho \$PATH;\")\n"                                 >> "$NU_ENV_FILE"
 
 printf "ls \$\"(which npm.ps1 | get 0.path | path dirname)/*.ps1\" | each {|it| get name | path basename }
-| each {|script_file| \$\"alias ($script_file | str replace \".ps1\" \"\") = powershell.exe ($script_file)\" } | str join \"\\\\n\"
+| each {|script_file| \$\"alias (\$script_file | str replace \".ps1\" \"\") = powershell.exe (\$script_file)\" } | str join \"\\\\n\"
 | save --force ~/.config/nushell/env-generated.nu\n"                                                                                    >> "$NU_ENV_FILE"
 
 history -c
