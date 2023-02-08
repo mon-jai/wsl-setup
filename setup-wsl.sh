@@ -46,19 +46,20 @@ curl -fsSL "https://github.com/nushell/nushell/archive/refs/tags/${NU_VERSION}.t
 tar -xz --touch --strip-components 5 --transform "s/default_//" -C "$NU_CONFIG_DIRECTORY" "nushell-${NU_VERSION}/crates/nu-utils/src/sample_config/"
 rm --force "${NU_CONFIG_DIRECTORY}/sample_login.nu"
 
-printf "alias git = git.exe\n"                                                    >> "$NU_CONFIG_FILE"
-printf "alias code = code-insiders\n"                                             >> "$NU_CONFIG_FILE"
-printf "alias node = node.exe\n"                                                  >> "$NU_CONFIG_FILE"
-printf "alias docker = docker.exe\nalias docker-compose = docker-compose.exe\n"   >> "$NU_CONFIG_FILE"
-printf "source ~/.config/nushell/env-generated.nu\n"                              >> "$NU_CONFIG_FILE"
-sed -i 's/show_banner: true/show_banner: false/'                                     "$NU_CONFIG_FILE"
+printf "alias git = git.exe\n"                                                    >> $NU_CONFIG_FILE
+printf "alias code = code-insiders\n"                                             >> $NU_CONFIG_FILE
+printf "alias node = node.exe\n"                                                  >> $NU_CONFIG_FILE
+printf "alias docker = docker.exe\nalias docker-compose = docker-compose.exe\n"   >> $NU_CONFIG_FILE
+printf "source ~/.config/nushell/env-generated.nu\n"                              >> $NU_CONFIG_FILE
+sed -i 's/show_banner: true/show_banner: false/'                                     $NU_CONFIG_FILE
 
-sed -i 's/def create_left_prompt/let home_directory_symlink_target = (wslpath (wslvar USERPROFILE) | str trim)\n\ndef create_left_prompt/' "$NU_ENV_FILE"
-sed -i 's/$path_segment/$path_segment | str replace --string $home_directory_symlink_target "~"/'                                          "$NU_ENV_FILE"
-printf "let-env PATH = (bash -c \$\"(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\\necho \$PATH;\")\n"                                 >> "$NU_ENV_FILE"
+# https://askubuntu.com/a/533268
+# https://stackoverflow.com/a/13279193
+perl -i -0pe 's/def create_left_prompt.*def create_right_prompt/def create_left_prompt [] {\n    let home_directory_symlink_target = (wslpath (wslvar USERPROFILE) | str trim)\n    let ansi_prefix = if (is-admin) { \$\"(ansi red_bold)\" } else { \$\"(ansi green_bold)\" }\n    let path = (\$env.PWD | str replace --string \$home_directory_symlink_target \"~\" | str replace -a \"\/\" \" \/ \" | str trim)\n    \$ansi_prefix + \$path\n}\n\ndef create_right_prompt/s' $NU_ENV_FILE
+printf "let-env PATH = (bash -c \$\"(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\\necho \$PATH;\")\n"          >> $NU_ENV_FILE
 
 printf "ls \$\"(which npm.ps1 | get 0.path | path dirname)/*.ps1\" | each {|it| get name | path basename }
 | each {|script_file| \$\"alias (\$script_file | str replace \".ps1\" \"\") = powershell.exe (\$script_file)\" }
-| str join \"\\\\n\" | save --force ~/.config/nushell/env-generated.nu\n"                                                               >> "$NU_ENV_FILE"
+| str join \"\\\\n\" | save --force ~/.config/nushell/env-generated.nu\n"                                        >> $NU_ENV_FILE
 
 history -c
