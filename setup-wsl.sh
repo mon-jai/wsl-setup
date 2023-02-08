@@ -55,7 +55,7 @@ sed -i 's/show_banner: true/show_banner: false/'                                
 
 # https://askubuntu.com/a/533268
 # https://stackoverflow.com/a/13279193
-perl -i -0pe 's/def create_left_prompt.*def create_right_prompt/def create_left_prompt [] {\n    let ansi_prefix = if (is-admin) { (ansi red_bold) } else { (ansi green_bold) }\n    let path = (\$env.PWD | str replace --string (wslpath (wslvar USERPROFILE) | str trim) \"~\" | str replace -a \"\/\" \" \/ \" | str trim)\n    \$ansi_prefix + \$path\n}\n\ndef create_right_prompt/s' $NU_ENV_FILE
+perl -i -0pe 's/def create_left_prompt.*def create_right_prompt/def create_left_prompt [] {\n    let ansi_prefix = if (is-admin) { (ansi red_bold) } else { (ansi green_bold) }\n    let path = (\$env.PWD | str replace \"^\/mnt\" \"\" | str replace --string (wslpath (wslvar USERPROFILE) | str trim) \"~\" | str replace -a \"\/\" \" \/ \" | str trim)\n    \$ansi_prefix + \$path\n}\n\ndef create_right_prompt/s' $NU_ENV_FILE
 
 sed -i 's/let-env PROMPT_INDICATOR = { "〉" }/let-env PROMPT_INDICATOR = { " 〉" }/'                                  $NU_ENV_FILE
 printf "let-env PATH = (bash -c \$\"(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\\necho \$PATH;\")\n"          >> $NU_ENV_FILE
