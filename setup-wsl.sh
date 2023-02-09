@@ -61,6 +61,6 @@ sed -i 's/let-env PROMPT_INDICATOR = { "ã€‰" }/let-env PROMPT_INDICATOR = { " ã€
 printf "let-env PATH = (bash -c \$\"(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\\\\necho \$PATH;\")\n"        >> $NU_ENV_FILE
 printf "\nls --short-names \$\"(which npm.ps1 | get 0.path | path dirname)/*.ps1\" | get name
 | each {|script_file| \$\"alias (\$script_file | str replace \".ps1\" \"\") = powershell.exe (\$script_file)\" }
-| str join \"\\\\n\" | save --force ~/.config/nushell/env-generated.nu\n"                                        >> $NU_ENV_FILE
+| save --force ~/.config/nushell/env-generated.nu\n"                                                             >> $NU_ENV_FILE
 
 history -c
