@@ -59,7 +59,7 @@ perl -i -0pe 's/def create_left_prompt.*def create_right_prompt/def create_left_
 
 sed -i 's/let-env PROMPT_INDICATOR = { "〉" }/let-env PROMPT_INDICATOR = { " 〉" }/'                                  $NU_ENV_FILE
 printf "let-env PATH = (bash -c \$\"(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\\\\necho \$PATH;\")\n"        >> $NU_ENV_FILE
-printf "\nls \$\"(which npm.ps1 | get 0.path | path dirname)/*.ps1\" | each {|it| get name | path basename }
+printf "\nls --short-names \$\"(which npm.ps1 | get 0.path | path dirname)/*.ps1\" | get name
 | each {|script_file| \$\"alias (\$script_file | str replace \".ps1\" \"\") = powershell.exe (\$script_file)\" }
 | str join \"\\\\n\" | save --force ~/.config/nushell/env-generated.nu\n"                                        >> $NU_ENV_FILE
 
