@@ -46,10 +46,7 @@ curl -fsSL "https://github.com/nushell/nushell/archive/refs/tags/${NU_VERSION}.t
 tar -xz --touch --strip-components 5 --transform "s/default_//" -C "$NU_CONFIG_DIRECTORY" "nushell-${NU_VERSION}/crates/nu-utils/src/sample_config/"
 rm --force "${NU_CONFIG_DIRECTORY}/sample_login.nu"
 
-printf "alias git = git.exe\n"                                                    >> $NU_CONFIG_FILE
 printf "alias code = code-insiders\n"                                             >> $NU_CONFIG_FILE
-printf "alias node = node.exe\n"                                                  >> $NU_CONFIG_FILE
-printf "alias docker = docker.exe\nalias docker-compose = docker-compose.exe\n"   >> $NU_CONFIG_FILE
 printf "source ~/.config/nushell/env-generated.nu\n"                              >> $NU_CONFIG_FILE
 sed -i 's/show_banner: true/show_banner: false/'                                     $NU_CONFIG_FILE
 
