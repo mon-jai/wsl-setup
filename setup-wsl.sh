@@ -62,5 +62,9 @@ printf "let-env PATH = (bash -c \$\"(/home/linuxbrew/.linuxbrew/bin/brew shellen
 printf "\nls --short-names \$\"(which npm.ps1 | get 0.path | path dirname)/*.ps1\" | get name
 | each {|script_file| \$\"alias (\$script_file | str replace \".ps1\" \"\") = powershell.exe (\$script_file)\" }
 | save --force ~/.config/nushell/env-generated.nu\n"                                                             >> $NU_ENV_FILE
+printf "\npowershell.exe -Command \"& { Get-Command -Type Application | ForEach-Object { \$_.Name } }\" | split row \"\\\\n\"
+| filter {|executable| \$executable | (not (\$executable | str contains \" \")) and (\$executable | str contains \".\") } |
+| each {|executable| \$\"alias (\$executable | split row \".\" | get 0) = (\$executable)\" }
+| save --force ~/.config/nushell/env-generated.nu"                                                               >> $NU_ENV_FILE
 
 history -c
