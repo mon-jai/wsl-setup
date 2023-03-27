@@ -65,6 +65,6 @@ printf "\nls --short-names \$\"(which npm.ps1 | get 0.path | path dirname)/*.ps1
 printf "\npowershell.exe -Command \"& { Get-Command -Type Application | ForEach-Object { \$_.Name } }\" | split row \"\\\\n\"
 | filter {|executable| \$executable | (not (\$executable | str contains \" \")) and (\$executable | str contains \".\") } |
 | each {|executable| \$\"alias (\$executable | split row \".\" | get 0) = (\$executable)\" }
-| save --force ~/.config/nushell/env-generated.nu"                                                               >> $NU_ENV_FILE
+| save --append ~/.config/nushell/env-generated.nu"                                                               >> $NU_ENV_FILE
 
 history -c
