@@ -55,8 +55,8 @@ sed -i 's/show_banner: true/show_banner: false/'                                
 perl -i -0pe 's/def create_left_prompt.*def create_right_prompt/def create_left_prompt [] {\n    let ansi_prefix = if (is-admin) { (ansi red_bold) } else { (ansi green_bold) }\n    let path = (\$env.PWD | str replace --string (wslpath (wslvar USERPROFILE) | str trim) \"~\" | str replace \"^\/mnt\" \"\" | str replace -a \"\/\" \" \/ \" | str trim)\n    \$ansi_prefix + \$path\n}\n\ndef create_right_prompt/s' $NU_ENV_FILE
 
 printf "\npowershell.exe -Command \"& { Get-Command -Type Application | ForEach-Object { \$_.Name } }\" | split row \"\\\\n\"
-| filter {|executable| \$executable | (not (\$executable | str contains \" \")) and (\$executable | str contains \".\") } |  
-| each {|executable| \$\"alias (\$executable | split row \".\" | get 0) = (\$executable)\" }                                 
+| filter {|executable| \$executable | (not (\$executable | str contains \" \")) and (\$executable | str contains \".\") } |
+| each {|executable| \$\"alias (\$executable | split row \".\" | get 0) = (\$executable)\" }
 | save --force  ~/.config/nushell/env-generated.nu\n"                                                                         >> $NU_ENV_FILE
 sed -i 's/let-env PROMPT_INDICATOR = { "〉" }/let-env PROMPT_INDICATOR = { " 〉" }/'                                               $NU_ENV_FILE
 printf "let-env PATH = (bash -c \$\"(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\\\\necho \$PATH;\")\n"                     >> $NU_ENV_FILE
