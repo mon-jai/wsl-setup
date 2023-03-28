@@ -33,7 +33,7 @@ which nu | sudo tee -a /etc/shells > '/dev/null'
 # https://unix.stackexchange.com/a/111367
 sudo chsh -s "$(command -v nu)" "$USER"
 
-NU_VERSION="0.76.0"
+NU_VERSION=$(nu --version)
 NU_CONFIG_DIRECTORY="$HOME/.config/nushell"
 NU_CONFIG_FILE="${NU_CONFIG_DIRECTORY}/config.nu"
 NU_ENV_FILE="${NU_CONFIG_DIRECTORY}/env.nu"
