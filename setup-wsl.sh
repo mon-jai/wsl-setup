@@ -82,6 +82,6 @@ printf "powershell.exe -Command \"& { Get-Command -Type Application | ForEach-Ob
 
   \$\"alias (\$command_name) = (\$command_prefix)(\$executable)\"
 )}
-| save --force  ~/.config/nushell/env-generated.nu" >> $NU_ENV_FILE
+| save --force ~/.config/nushell/env-generated.nu" >> $NU_ENV_FILE
 
 history -c
