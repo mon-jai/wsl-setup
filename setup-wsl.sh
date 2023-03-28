@@ -66,7 +66,6 @@ def create_left_prompt [] {
 }
 
 def create_right_prompt/s" $NU_ENV_FILE
-sed -i 's/let-env PROMPT_INDICATOR = { "〉" }/let-env PROMPT_INDICATOR = { " 〉" }/' $NU_ENV_FILE
 printf "powershell.exe -Command \"& { Get-Command -Type Application | ForEach-Object { \$_.Name } }\" | lines
 | filter {|executable| (\$executable | str contains \".\") and (not (\$executable | str contains \" \")) }
 | each {|executable| (
@@ -81,5 +80,7 @@ printf "powershell.exe -Command \"& { Get-Command -Type Application | ForEach-Ob
   \$\"alias (\$command_name) = (\$command_prefix)(\$executable)\"
 )}
 | save --force ~/.config/nushell/env-generated.nu" >> $NU_ENV_FILE
+sed -i 's/let-env PROMPT_INDICATOR = { "〉" }/let-env PROMPT_INDICATOR = { " 〉" }/' $NU_ENV_FILE
+printf "let-env PATH = (bash -c \$\"(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\\\\necho \$PATH;\")\n" >> $NU_ENV_FILE
 
 history -c
