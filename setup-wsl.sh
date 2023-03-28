@@ -33,7 +33,7 @@ which nu | sudo tee -a /etc/shells > '/dev/null'
 # https://unix.stackexchange.com/a/111367
 sudo chsh -s "$(command -v nu)" "$USER"
 
-NU_VERSION=$(nu --version)
+NU_VERSION="0.76.0"
 NU_CONFIG_DIRECTORY="$HOME/.config/nushell"
 NU_CONFIG_FILE="${NU_CONFIG_DIRECTORY}/config.nu"
 NU_ENV_FILE="${NU_CONFIG_DIRECTORY}/env.nu"
@@ -52,16 +52,36 @@ sed -i 's/show_banner: true/show_banner: false/'                                
 
 # https://askubuntu.com/a/533268
 # https://stackoverflow.com/a/13279193
-perl -i -0pe 's/def create_left_prompt.*def create_right_prompt/def create_left_prompt [] {\n    let ansi_prefix = if (is-admin) { (ansi red_bold) } else { (ansi green_bold) }\n    let path = (\$env.PWD | str replace --string (wslpath (wslvar USERPROFILE) | str trim) \"~\" | str replace \"^\/mnt\" \"\" | str replace -a \"\/\" \" \/ \" | str trim)\n    \$ansi_prefix + \$path\n}\n\ndef create_right_prompt/s' $NU_ENV_FILE
+perl -i -0pe "s/def create_left_prompt.*def create_right_prompt/\
+def create_left_prompt [] {
+  let ansi_prefix = if (is-admin) { (ansi red_bold) } else { (ansi green_bold) }
+  let path = (
+    \\\$env.PWD
+    | str replace --string (wslpath (wslvar USERPROFILE) | str trim) \"~\"
+    | str replace \"^\/mnt\" \"\"
+    | str replace -a \"\/\" \" \/ \"
+    | str trim
+  )
+  \\\$ansi_prefix + \\\$path
+}
 
-printf "\npowershell.exe -Command \"& { Get-Command -Type Application | ForEach-Object { \$_.Name } }\" | lines 
-| filter {|executable| \$executable | (not (\$executable | str contains \" \")) and (\$executable | str contains \".\") } |
-| each {|executable| \$\"alias (\$executable | split row \".\" | get 0) = (\$executable)\" }
-| save --force  ~/.config/nushell/env-generated.nu\n"                                                                       >> $NU_ENV_FILE
-sed -i 's/let-env PROMPT_INDICATOR = { "〉" }/let-env PROMPT_INDICATOR = { " 〉" }/'                                             $NU_ENV_FILE
-printf "let-env PATH = (bash -c \$\"(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\\\\necho \$PATH;\")\n"                   >> $NU_ENV_FILE
-printf "\nls --short-names \$\"(which npm.ps1 | get 0.path | path dirname)/*.ps1\" | get name
-| each {|script_file| \$\"alias (\$script_file | str replace \".ps1\" \"\") = powershell.exe (\$script_file)\" }
-| save --append ~/.config/nushell/env-generated.nu\n"                                                                       >> $NU_ENV_FILE
+def create_right_prompt/s" $NU_ENV_FILE
+
+sed -i 's/let-env PROMPT_INDICATOR = { "〉" }/let-env PROMPT_INDICATOR = { " 〉" }/' $NU_ENV_FILE
+
+printf "powershell.exe -Command \"& { Get-Command -Type Application | ForEach-Object { \$_.Name } }\" | lines
+| filter {|executable| (\$executable | str contains \".\") and (not (\$executable | str contains \" \")) }
+| each {|executable| (
+  let command_name   = (\$executable | split row \".\" | get 0);
+  let extension      = (\$executable | split row \".\" | get 1);
+  let command_prefix = (
+    if \$extension == \"cmd\" or \$extension == \"bat\" { \"cmd /c \" }
+    else if \$extension == \"ps1\" { \"powershell \" }
+    else { \"\" }
+  );
+
+  \$\"alias (\$command_name) = (\$command_prefix)(\$executable)\"
+)}
+| save --force  ~/.config/nushell/env-generated.nu" >> $NU_ENV_FILE
 
 history -c
