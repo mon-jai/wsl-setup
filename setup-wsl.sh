@@ -79,7 +79,7 @@ printf "powershell.exe -Command \"& { Get-Command -Type Application | ForEach-Ob
 
   \$\"alias (\$command_name) = (\$command_prefix)(\$executable)\"
 )}
-| save --force ~/.config/nushell/env-generated.nu" >> $NU_ENV_FILE
+| save --force ~/.config/nushell/env-generated.nu\n" >> $NU_ENV_FILE
 sed -i 's/let-env PROMPT_INDICATOR = { "〉" }/let-env PROMPT_INDICATOR = { " 〉" }/' $NU_ENV_FILE
 printf "let-env PATH = (bash -c \$\"(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\\\\necho \$PATH;\")\n" >> $NU_ENV_FILE
 
