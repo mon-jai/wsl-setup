@@ -66,9 +66,10 @@ def create_left_prompt [] {
 }
 
 def create_right_prompt/s" $NU_ENV_FILE
-printf "powershell.exe -Command \"& { Get-Command -Type Application | ForEach-Object { \$_.Name } }\" | lines
+printf "\
+powershell.exe -Command \"& { Get-Command -Type Application | ForEach-Object { \$_.Name } }\" | lines
 | filter {|executable| (\$executable | str contains \".\") and (not (\$executable | str contains \" \")) }
-| each {|executable| (
+| reduce --fold {} {|executable, command_map| (
   let command_name   = (\$executable | split row \".\" | get 0);
   let extension      = (\$executable | split row \".\" | get 1);
   let command_prefix = (
@@ -77,10 +78,17 @@ printf "powershell.exe -Command \"& { Get-Command -Type Application | ForEach-Ob
     else { \"\" }
   );
 
-  \$\"alias (\$command_name) = (\$command_prefix)(\$executable)\"
+  if not \$command_name in \$command_map {
+    # Insert does not modify record in place
+    \$command_map | insert \$command_name \$\"alias (\$command_name) = (\$command_prefix)(\$executable)\"
+  } else {
+    \$command_map
+  }
 )}
-| save --force ~/.config/nushell/env-generated.nu\n" >> $NU_ENV_FILE
-sed -i 's/let-env PROMPT_INDICATOR = { "〉" }/let-env PROMPT_INDICATOR = { " 〉" }/' $NU_ENV_FILE
+| transpose key value | each { get value }
+| save --force ~/.config/nushell/env-generated.nu
+"
+sed -i 's/let-env PROMPT_INDICATOR = { "\(.\)" }/let-env PROMPT_INDICATOR = { " \1" }/' $NU_ENV_FILE
 printf "let-env PATH = (bash -c \$\"(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\\\\necho \$PATH;\")\n" >> $NU_ENV_FILE
 
 history -c
