@@ -68,7 +68,7 @@ def create_left_prompt [] {
 def create_right_prompt/s" $NU_ENV_FILE
 printf "\
 powershell.exe -Command \"& { Get-Command -Type Application | ForEach-Object { \$_.Name } }\" | lines
-| filter {|executable| (\$executable | str contains \".\") and (not (\$executable | str contains \" \")) }
+| filter { (\$in | str contains .) and (not (\$in | str contains \" \")) }
 | reduce --fold {} {|executable, command_map| (
   let command_name   = (\$executable | split row \".\" | get 0);
   let extension      = (\$executable | split row \".\" | get 1);
@@ -85,7 +85,7 @@ powershell.exe -Command \"& { Get-Command -Type Application | ForEach-Object { \
     \$command_map
   }
 )}
-| transpose key value | each { get value }
+| transpose -i value | get value
 | save --force ~/.config/nushell/env-generated.nu
 
 " >> $NU_ENV_FILE
