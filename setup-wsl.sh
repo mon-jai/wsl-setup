@@ -86,8 +86,7 @@ powershell.exe -Command \"& { Get-Command -Type Application | ForEach-Object { \
   }
 )}
 | transpose key value | each { get value }
-| save --force ~/.config/nushell/env-generated.nu
-"
+| save --force ~/.config/nushell/env-generated.nu\n" >> $NU_ENV_FILE
 sed -i 's/let-env PROMPT_INDICATOR = { "\(.\)" }/let-env PROMPT_INDICATOR = { " \1" }/' $NU_ENV_FILE
 printf "let-env PATH = (bash -c \$\"(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\\\\necho \$PATH;\")\n" >> $NU_ENV_FILE
 
