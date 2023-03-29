@@ -68,7 +68,7 @@ def create_left_prompt [] {
 def create_right_prompt/s" $NU_ENV_FILE
 printf "\
 powershell.exe -Command \"& { Get-Command -Type Application | ForEach-Object { \$_.Name } }\" | lines
-| filter { (\$in | str contains .) and (not (\$in | str contains \" \")) }
+| filter { \".\" in \$in and \" \" not-in \$in }
 | reduce --fold {} {|executable, command_map| (
   let command_name   = (\$executable | split row \".\" | get 0);
   let extension      = (\$executable | split row \".\" | get 1);
