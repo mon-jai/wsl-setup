@@ -63,28 +63,27 @@ def create_left_prompt [] {
 
 def create_right_prompt/s" $NU_ENV_FILE
 
-printf "\
-powershell.exe -Command \"& { Get-Command -Type Application | ForEach-Object { \$_.Name } }\" | lines
-| filter { \".\" in \$in and \" \" not-in \$in }
-| reduce --fold {} {|executable, command_map| (
-  let command_name   = (\$executable | split row \".\" | get 0);
-  let extension      = (\$executable | split row \".\" | get 1);
+printf '\
+powershell.exe -Command "& { Get-Command -Type Application | ForEach-Object { $_.Name } }" | lines
+| filter { "." in $in and " " not-in $in }
+| reduce --fold "" {|executable, acc| (
+  let command_name = ($executable | split row "." | get 0);
+  let extension =    ($executable | split row "." | get 1);
   let command_prefix = (
-    if \$extension == \"cmd\" or \$extension == \"bat\" { \"cmd /c \" }
-    else if \$extension == \"ps1\" { \"powershell \" }
-    else { \"\" }
+    if $extension == "cmd" or $extension == "bat" { "cmd /c " }
+    else if $extension == "ps1" { "powershell " }
+    else { "" }
   );
+  let alias_declaration = $"alias ($command_name) = ";
 
-  if not \$command_name in \$command_map {
-    # Insert does not modify record in place
-    \$command_map | insert \$command_name \$\"alias (\$command_name) = (\$command_prefix)(\$executable)\"
+  if not $"\\n($alias_declaration)" in $acc {
+    $acc + $"($alias_declaration)($command_prefix)($executable)\\n"
   } else {
-    \$command_map
+    $acc
   }
 )}
-| transpose -i value | get value
 | save --force ~/.config/nushell/env-generated.nu
-\n" >> $NU_ENV_FILE
+\n' >> $NU_ENV_FILE
 
 sed -i 's/let-env PROMPT_INDICATOR = { "\(.\) " }/let-env PROMPT_INDICATOR = { " \1 " }/' $NU_ENV_FILE
 printf "let-env PATH = (bash -c \$\"(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\\\\necho \$PATH;\")\n" >> $NU_ENV_FILE
