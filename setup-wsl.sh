@@ -35,8 +35,8 @@ sudo chsh -s "$(command -v nu)" "$USER"
 
 NU_VERSION=$(nu --version)
 NU_CONFIG_DIRECTORY="$HOME/.config/nushell"
-NU_CONFIG_FILE="${NU_CONFIG_DIRECTORY}/config.nu"
 NU_ENV_FILE="${NU_CONFIG_DIRECTORY}/env.nu"
+NU_CONFIG_FILE="${NU_CONFIG_DIRECTORY}/config.nu"
 
 # mkdir if not exists, https://stackoverflow.com/a/793867
 mkdir -p "$NU_CONFIG_DIRECTORY"
@@ -45,10 +45,6 @@ mkdir -p "$NU_CONFIG_DIRECTORY"
 curl -fsSL "https://github.com/nushell/nushell/archive/refs/tags/${NU_VERSION}.tar.gz" |\
 tar -xz --touch --strip-components 5 --transform "s/default_//" -C "$NU_CONFIG_DIRECTORY" "nushell-${NU_VERSION}/crates/nu-utils/src/sample_config/"
 rm --force "${NU_CONFIG_DIRECTORY}/sample_login.nu"
-
-printf "alias code = code-insiders\n"                                             >> $NU_CONFIG_FILE
-printf "source ~/.config/nushell/env-generated.nu\n"                              >> $NU_CONFIG_FILE
-sed -i 's/show_banner: true/show_banner: false/'                                     $NU_CONFIG_FILE
 
 # https://askubuntu.com/a/533268
 # https://stackoverflow.com/a/13279193
@@ -66,6 +62,7 @@ def create_left_prompt [] {
 }
 
 def create_right_prompt/s" $NU_ENV_FILE
+
 printf "\
 powershell.exe -Command \"& { Get-Command -Type Application | ForEach-Object { \$_.Name } }\" | lines
 | filter { \".\" in \$in and \" \" not-in \$in }
@@ -89,7 +86,12 @@ powershell.exe -Command \"& { Get-Command -Type Application | ForEach-Object { \
 | save --force ~/.config/nushell/env-generated.nu
 
 " >> $NU_ENV_FILE
+
 sed -i 's/let-env PROMPT_INDICATOR = { "\(.\) " }/let-env PROMPT_INDICATOR = { " \1 " }/' $NU_ENV_FILE
 printf "let-env PATH = (bash -c \$\"(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\\\\necho \$PATH;\")\n" >> $NU_ENV_FILE
+
+printf "alias code = code-insiders\n"                >> $NU_CONFIG_FILE
+printf "source ~/.config/nushell/env-generated.nu\n" >> $NU_CONFIG_FILE
+sed -i 's/show_banner: true/show_banner: false/'        $NU_CONFIG_FILE
 
 history -c
