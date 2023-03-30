@@ -63,7 +63,7 @@ def create_left_prompt [] {
 
 def create_right_prompt/s" $NU_ENV_FILE
 
-printf '\
+printf '
 powershell.exe -Command "& { Get-Command -Type Application | ForEach-Object { $_.Name } }" | lines
 | filter { "." in $in and " " not-in $in }
 | reduce --fold "" {|executable, acc| (
