@@ -55,8 +55,6 @@ def create_left_prompt [] {
     \\\$env.PWD
     | str replace --string (wslpath (wslvar USERPROFILE) | str trim) \"~\"
     | str replace \"^\/mnt\" \"\"
-    | str replace -a \"\/\" \" \/ \"
-    | str trim
   )
   \\\$ansi_prefix + \\\$path
 }
