@@ -78,7 +78,7 @@ powershell.exe -Command "& { Get-Command -Type Application | ForEach-Object { $_
   );
   let alias_declaration = $"alias ($command_name) = ";
 
-  if (not $alias_declaration in $acc) and (not $command_name in $env.LINUX_BINS) {
+  if (not $alias_declaration in $acc) and (not $"($command_name)\\n" in $env.LINUX_BINS) {
     $acc + $"($alias_declaration)($command_prefix)($executable)\\n"
   } else {
     $acc
