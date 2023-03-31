@@ -64,7 +64,7 @@ def create_left_prompt [] {
 def create_right_prompt/s" $NU_ENV_FILE
 
 printf '
-let-env LINUX_BINS = ( ls /usr/bin/ --short-names | get name | str join "\n" )
+let-env LINUX_BINS = (ls /usr/bin/ --short-names | get name | str join "\\n")
 
 powershell.exe -Command "& { Get-Command -Type Application | ForEach-Object { $_.Name } }" | lines
 | filter { "." in $in and " " not-in $in }
