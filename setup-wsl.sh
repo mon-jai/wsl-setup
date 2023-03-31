@@ -64,6 +64,8 @@ def create_left_prompt [] {
 def create_right_prompt/s" $NU_ENV_FILE
 
 printf '
+let-env LINUX_BINS = ( ls /usr/bin/ --short-names | get name | str join "\n" )
+
 powershell.exe -Command "& { Get-Command -Type Application | ForEach-Object { $_.Name } }" | lines
 | filter { "." in $in and " " not-in $in }
 | reduce --fold "" {|executable, acc| (
@@ -76,13 +78,15 @@ powershell.exe -Command "& { Get-Command -Type Application | ForEach-Object { $_
   );
   let alias_declaration = $"alias ($command_name) = ";
 
-  if not $"\\n($alias_declaration)" in $acc {
+  if (not $alias_declaration in $acc) and (not $command_name in $env.LINUX_BINS) {
     $acc + $"($alias_declaration)($command_prefix)($executable)\\n"
   } else {
     $acc
   }
 )}
 | save --force ~/.config/nushell/env-generated.nu
+
+hide-env LINUX_BINS
 \n' >> $NU_ENV_FILE
 
 sed -i 's/let-env PROMPT_INDICATOR = { "\(.\) " }/let-env PROMPT_INDICATOR = { " \1 " }/' $NU_ENV_FILE
