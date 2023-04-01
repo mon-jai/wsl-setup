@@ -69,15 +69,15 @@ let-env LINUX_BINS = (ls /usr/bin/ --short-names | get name | str join ";") + ";
 powershell.exe -Command "& { Get-Command -Type Application | ForEach-Object { $_.Name } }" | lines
 | filter { "." in $in and " " not-in $in }
 | reduce --fold "" {|executable, acc| (
-  let split_results  = ($executable | split row ".");
-  let command_name   = $split_results.0;
-  let extension      = $split_results.1;
-  let command_prefix = (
+  let split_results     = ($executable | split row ".");
+  let command_name      = $split_results.0;
+  let extension         = $split_results.1;
+  let alias_declaration = $"alias ($command_name) = ";
+  let command_prefix    = (
     if $extension == "cmd" or $extension == "bat" { "cmd /c " }
     else if $extension == "ps1" { "powershell " }
     else { "" }
   );
-  let alias_declaration = $"alias ($command_name) = ";
 
   if (not $alias_declaration in $acc) and (not $"($command_name);" in $env.LINUX_BINS) {
     $acc + $"($alias_declaration)($command_prefix)($executable)\\n"
