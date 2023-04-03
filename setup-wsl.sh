@@ -74,12 +74,12 @@ powershell.exe -Command "& { Get-Command -Type Application | ForEach-Object { $_
   let extension         = $split_results.1;
   let alias_declaration = $"alias ($command_name) = ";
   let command_prefix    = (
-    if $extension == "cmd" or $extension == "bat" { "cmd /c " }
-    else if $extension == "ps1" { "powershell " }
+    if $extension == "cmd" or $extension == "bat" { "cmd.exe /c " }
+    else if $extension == "ps1" { "powershell.exe " }
     else { "" }
   );
 
-  if (not $alias_declaration in $acc) and (not $"($command_name);" in $env.LINUX_BINS) {
+  if (not $alias_declaration in $acc) and (not $command_name + ";" in $env.LINUX_BINS) {
     $acc + $"($alias_declaration)($command_prefix)($executable)\\n"
   } else {
     $acc
