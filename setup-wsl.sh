@@ -67,7 +67,7 @@ printf '
 let-env LINUX_BINS = (ls /usr/bin/ --short-names | get name | str join ";") + ";"
 
 powershell.exe -Command "& { Get-Command -Type Application | ForEach-Object { $_.Name } }" | lines
-| filter { "." in $in and " " not-in $in }
+| filter {|| "." in $in and " " not-in $in }
 | reduce --fold "" {|executable, acc| (
   let split_results     = ($executable | split row ".");
   let command_name      = $split_results.0;
