@@ -90,7 +90,7 @@ powershell.exe -Command "& { Get-Command -Type Application | ForEach-Object { $_
 hide-env LINUX_BINS
 \n' >> $NU_ENV_FILE
 
-sed -i 's/let-env PROMPT_INDICATOR = { "\(.\) " }/let-env PROMPT_INDICATOR = { " \1 " }/' $NU_ENV_FILE
+sed -i 's/let-env PROMPT_INDICATOR = {|| "\(.\) " }/let-env PROMPT_INDICATOR = {|| " \1 " }/' $NU_ENV_FILE
 printf "let-env PATH = (bash -c \$\"(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\\\\necho \$PATH;\")\n" >> $NU_ENV_FILE
 
 printf "alias code = code-insiders\n"                >> $NU_CONFIG_FILE
