@@ -29,7 +29,7 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 brew install nushell
 
 # https://www.nushell.sh/book/installation.html#setting-the-login-shell-nix
-which nu | sudo tee -a /etc/shells > '/dev/null'
+which nu | sudo tee -a /etc/shells > /dev/null
 # https://unix.stackexchange.com/a/111367
 sudo chsh -s "$(command -v nu)" "$USER"
 
@@ -96,6 +96,6 @@ printf "let-env PATH = (bash -c \$\"(/home/linuxbrew/.linuxbrew/bin/brew shellen
 printf "alias git = git.exe\n"                       >> $NU_CONFIG_FILE
 printf "alias code = code-insiders\n"                >> $NU_CONFIG_FILE
 printf "source ~/.config/nushell/env-generated.nu\n" >> $NU_CONFIG_FILE
-sed -i 's/show_banner: true/show_banner: false/'        $NU_CONFIG_FILE
+sed -i "s/show_banner: true/show_banner: false/"        $NU_CONFIG_FILE
 
 history -c
