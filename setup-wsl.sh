@@ -48,20 +48,20 @@ rm --force "${NU_CONFIG_DIRECTORY}/sample_login.nu"
 
 # https://askubuntu.com/a/533268
 # https://stackoverflow.com/a/13279193
-perl -i -0pe "s/def create_left_prompt.*def create_right_prompt/\
+perl -i -0pe 's/def create_left_prompt.*def create_right_prompt/\
 def create_left_prompt [] {
   let ansi_prefix = if (is-admin) { (ansi red_bold) } else { (ansi green_bold) }
   let path = (
-    \\\$env.PWD
-    | str replace --string (wslpath (wslvar USERPROFILE) | str trim) \"~\"
-    | str replace \"^\/mnt\" \"\"
-    | str replace -a \"\/\" \" \/ \"
+    $env.PWD
+    | str replace --string (wslpath (wslvar USERPROFILE) | str trim) "~"
+    | str replace "^\/mnt" ""
+    | str replace -a "\/" " \/ "
     | str trim
   )
-  \\\$ansi_prefix + \\\$path
+  $ansi_prefix + $path
 }
 
-def create_right_prompt/s" $NU_ENV_FILE
+def create_right_prompt/s' $NU_ENV_FILE
 
 printf '
 let-env LINUX_BINS = (ls /usr/bin/ --short-names | get name | str join ";") + ";"
@@ -93,6 +93,7 @@ hide-env LINUX_BINS
 sed -i 's/let-env PROMPT_INDICATOR = {|| "\(.\) " }/let-env PROMPT_INDICATOR = {|| " \1 " }/' $NU_ENV_FILE
 printf "let-env PATH = (bash -c \$\"(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\\\\necho \$PATH;\")\n" >> $NU_ENV_FILE
 
+printf "alias git = git.exe\n"                       >> $NU_CONFIG_FILE
 printf "alias code = code-insiders\n"                >> $NU_CONFIG_FILE
 printf "source ~/.config/nushell/env-generated.nu\n" >> $NU_CONFIG_FILE
 sed -i 's/show_banner: true/show_banner: false/'        $NU_CONFIG_FILE
