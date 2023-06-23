@@ -52,13 +52,13 @@ perl -i -0pe 's/def create_left_prompt.*def create_right_prompt/\
 def create_left_prompt [] {
   let ansi_prefix = if (is-admin) { (ansi red_bold) } else { (ansi green_bold) }
   let path = (
-    $env.PWD
+    \$env.PWD
     | str replace --string (wslpath (wslvar USERPROFILE) | str trim) "~"
     | str replace "^\/mnt" ""
     | str replace -a "\/" " \/ "
     | str trim
   )
-  $ansi_prefix + $path
+  \$ansi_prefix + \$path
 }
 
 def create_right_prompt/s' $NU_ENV_FILE
