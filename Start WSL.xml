@@ -46,6 +46,7 @@
     <Exec>
       <!-- https://stackoverflow.com/a/71113840 -->
       <Command>wslg</Command>
+      <!-- https://unix.stackexchange.com/a/366078, https://unix.stackexchange.com/q/42901 -->
       <Arguments>--distribution Ubuntu-Preview /bin/sleep 10000d</Arguments>
     </Exec>
   </Actions>
