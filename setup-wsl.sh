@@ -64,7 +64,7 @@ def create_left_prompt [] {
 def create_right_prompt/s' $NU_ENV_FILE
 
 printf '
-let-env LINUX_BINS = (ls /usr/bin/ --short-names | get name | str join ";") + ";"
+$env.LINUX_BINS = (ls /usr/bin/ --short-names | get name | str join ";") + ";"
 
 powershell.exe -Command "& { Get-Command -Type Application | ForEach-Object { $_.Name } }" | lines
 | filter {|| "." in $in and " " not-in $in }
@@ -90,8 +90,8 @@ powershell.exe -Command "& { Get-Command -Type Application | ForEach-Object { $_
 hide-env LINUX_BINS
 \n' >> $NU_ENV_FILE
 
-sed -i 's/let-env PROMPT_INDICATOR = {|| "\(.\) " }/let-env PROMPT_INDICATOR = {|| " \1 " }/' $NU_ENV_FILE
-printf "let-env PATH = (bash -c \$\"(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\\\\necho \$PATH;\")\n" >> $NU_ENV_FILE
+sed -i 's/$env.PROMPT_INDICATOR = {|| "\(.\) " }/$env.PROMPT_INDICATOR = {|| " \1 " }/' $NU_ENV_FILE
+printf "\$env.PATH = (bash -c \$\"(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\\\\necho \$PATH;\")\n" >> $NU_ENV_FILE
 
 printf "alias git = git.exe\n"                       >> $NU_CONFIG_FILE
 printf "alias code = code-insiders\n"                >> $NU_CONFIG_FILE
