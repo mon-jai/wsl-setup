@@ -44,8 +44,8 @@
     <Exec>
       <!-- https://stackoverflow.com/a/71113840 -->
       <Command>wslg</Command>
-      <!-- https://unix.stackexchange.com/a/644501, https://unix.stackexchange.com/a/366078, https://unix.stackexchange.com/q/42901#comment656034_42911 -->
-      <Arguments>--distribution Ubuntu-Preview /bin/sleep 2147483647d</Arguments>
+      <!-- https://unix.stackexchange.com/a/660117, https://unix.stackexchange.com/a/644501, https://unix.stackexchange.com/a/366078, https://unix.stackexchange.com/q/42901#comment656034_42911 -->
+      <Arguments>--distribution Ubuntu-Preview /bin/sleep 2147483647s</Arguments>
     </Exec>
   </Actions>
 </Task>
