@@ -65,6 +65,7 @@ def create_right_prompt/s' $NU_ENV_FILE
 
 printf '
 $env.LINUX_BINS = (ls /usr/bin/ --short-names | get name | str join ";") + ";"
+$env.BUILTIN_COMMANDS = (help commands | where command_type == builtin | str join ";") + ";"
 
 powershell.exe -Command "& { Get-Command -Type Application | ForEach-Object { $_.Name } }" | lines
 | filter {|| "." in $in and " " not-in $in }
@@ -79,7 +80,7 @@ powershell.exe -Command "& { Get-Command -Type Application | ForEach-Object { $_
     else { "" }
   );
 
-  if (not $alias_declaration in $acc) and (not $command_name + ";" in $env.LINUX_BINS) {
+  if (not $alias_declaration in $acc) and (not $command_name + ";" in $env.LINUX_BINS) and (not $command_name + ";" in $env.BUILTIN_COMMANDS) {
     $acc + $"($alias_declaration)($command_prefix)($executable)\\n"
   } else {
     $acc
@@ -88,6 +89,7 @@ powershell.exe -Command "& { Get-Command -Type Application | ForEach-Object { $_
 | save --force ~/.config/nushell/env-generated.nu
 
 hide-env LINUX_BINS
+hide-env BUILTIN_COMMANDS
 \n' >> $NU_ENV_FILE
 
 sed -i 's/$env.PROMPT_INDICATOR = {|| "\(.\) " }/$env.PROMPT_INDICATOR = {|| " \1 " }/' $NU_ENV_FILE
