@@ -65,7 +65,7 @@ def create_right_prompt/s' $NU_ENV_FILE
 
 printf '
 $env.LINUX_BINS = (ls /usr/bin/ --short-names | get name | str join ";") + ";"
-$env.BUILTIN_COMMANDS = (help commands | where command_type == builtin | str join ";") + ";"
+$env.BUILTIN_COMMANDS = (help commands | where command_type == builtin | get name | str join ";") + ";" 
 
 powershell.exe -Command "& { Get-Command -Type Application | ForEach-Object { $_.Name } }" | lines
 | filter {|| "." in $in and " " not-in $in }
