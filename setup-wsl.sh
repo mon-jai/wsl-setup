@@ -75,7 +75,8 @@ powershell.exe -Command "& { Get-Command -Type Application | ForEach-Object { $_
   let extension         = $split_results.1;
   let alias_declaration = $"alias ($command_name) = ";
   let command_prefix    = (
-    if $extension == "cmd" or $extension == "bat" { "cmd.exe /c " }
+    # https://www.nushell.sh/book/operators.html#case-sensitivity
+    if $extension =~ "(?i)cmd" or $extension =~ "(?i)bat" { "cmd.exe /c " }
     else if $extension == "ps1" { "powershell.exe " }
     else { "" }
   );
