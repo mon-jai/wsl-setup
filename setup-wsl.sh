@@ -53,7 +53,7 @@ def create_left_prompt [] {
   let ansi_prefix = if (is-admin) { (ansi red_bold) } else { (ansi green_bold) }
   let path = (
     \$env.PWD
-    | str replace --string (wslpath (wslvar USERPROFILE) | str trim) "~"
+    | str replace (wslpath (wslvar USERPROFILE) | str trim) "~"
     | str replace "^\/mnt" ""
     | str replace -a "\/" " \/ "
     | str trim
