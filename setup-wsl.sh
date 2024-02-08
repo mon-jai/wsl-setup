@@ -81,7 +81,12 @@ powershell.exe -Command "& { Get-Command -Type Application | ForEach-Object { $_
     else { "" }
   );
 
-  if (not $alias_declaration in $acc) and (not $command_name + ";" in $env.LINUX_BINS) and (not $command_name + ";" in $env.BUILTIN_COMMANDS) {
+  let command_name_with_seperator = $command_name + ";";
+  if (
+    not ($alias_declaration in $acc)
+    and not ($command_name_with_seperator in $env.LINUX_BINS)
+    and not ($command_name_with_seperator in $env.BUILTIN_COMMANDS)
+  ) {
     $acc + $"($alias_declaration)($command_prefix)($executable)\\n"
   } else {
     $acc
