@@ -54,7 +54,7 @@ def create_left_prompt [] {
   let path = (
     \$env.PWD
     | str replace (wslpath (wslvar USERPROFILE) | str trim) "~"
-    | str replace "^\/mnt" ""
+    | str replace --regex "^\/mnt" ""
     | str replace -a "\/" " \/ "
     | str trim
   )
